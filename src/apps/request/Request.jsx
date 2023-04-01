@@ -2,12 +2,24 @@ import axios from 'axios';
 import {useCallback, useState } from 'react';
 import {Grid, Layout, Select, Button, Input, Space, Row, Col, notification} from "antd";
 import {
-  PlusCircleOutlined
+  PlusCircleOutlined,
+  CloseOutlined,
+  PlusOutlined
 } from '@ant-design/icons';
 
 const {Header, Sider, Content} = Layout;
 const {Option} = Select;
 const {Search, TextArea} = Input;
+
+
+const append = (list, item) => {
+  list.splice(list.length, 0, item);
+  console.log(list)
+}
+
+const remove = (list, idx) => {
+  list.splice(idx, 1);
+}
 
 
 export default function Request() {
@@ -117,15 +129,26 @@ export default function Request() {
             headers.map((h, idx) => {
               return (
                 <Row key={idx}>
-                  <Col span={11}><Input value={h.key} /></Col>
-                  <Col span={1} style={{margin: 'auto'}}>:</Col>
-                  <Col span={12}><Input value={h.val} /></Col>
+                  <Col span={10}><Input value={h.key} /></Col>
+                  <Col span={1}></Col>
+                  <Col span={11}><Input value={h.val} /></Col>
+                  <Col span={1}>
+                    <CloseOutlined
+                      onClick={() => setHeaders(headers.filter((item, i) => i !== idx))} />
+                  </Col>
+                  <Col span={1}></Col>
                 </Row>
               )
             })
           }
+          <Row>
+            <Button
+              type="text"
+              icon={<PlusOutlined />}
+              onClick={() => setHeaders([...headers, {key: "", val: ""}])}
+            >add header</Button>
+          </Row>
         </Col>
-        <Col span={1}><PlusCircleOutlined /></Col>
         <Col span={16}>
           <TextArea style={{minHeight: 400}}></TextArea>
         </Col>
